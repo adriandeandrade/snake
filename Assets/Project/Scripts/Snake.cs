@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
-
     [SerializeField] private int speed;
 
     private enum Direction { UP, DOWN, LEFT, RIGHT }
@@ -19,6 +18,9 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.gameOver || !GameManager.instance.isMoving)
+            return;
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             direction = Direction.UP;
@@ -79,6 +81,16 @@ public class Snake : MonoBehaviour
         else if (transform.position.y < -screenHeight)
         {
             transform.position = new Vector2(transform.position.x, screenHeight);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Obstacle"))
+        {
+            GameManager.instance.EndRound();
+            Destroy(gameObject);
+            Debug.Log("Hit");
         }
     }
 }

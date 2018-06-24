@@ -10,9 +10,13 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        if(FindObjectOfType<Snake>() != null)
+        if (FindObjectOfType<Snake>() != null)
         {
-            target = FindObjectOfType<Snake>().transform;
+            FindTarget();
+        } else
+        {
+            Debug.Log("Cannot find target.");
+            Invoke("FindTarget", 0.1f);
         }
 
         direction = target.position - transform.position;
@@ -20,7 +24,6 @@ public class Obstacle : MonoBehaviour
 
     private void Update()
     {
-        
         transform.Translate(direction.normalized * speed * Time.deltaTime);
     }
 
@@ -29,5 +32,10 @@ public class Obstacle : MonoBehaviour
         transform.localScale = new Vector2(xSize, ySize);
         speed = Random.Range(5f, 8f);
         //RotateObject();
+    }
+
+    private void FindTarget()
+    {
+        target = FindObjectOfType<Snake>().transform;
     }
 }
