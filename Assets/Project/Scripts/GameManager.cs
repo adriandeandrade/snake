@@ -12,10 +12,14 @@ public class GameManager : MonoBehaviour
 
     public delegate void OnRoundStart();
     public static event OnRoundStart OnStart;
+    public delegate void OnRoundEnd();
+    public static event OnRoundEnd OnEnd;
 
     public int lives;
     public bool gameOver;
     public bool isMoving;
+    public bool hasShield;
+    public bool shieldSpawned;
 
     private void Start()
     {
@@ -28,6 +32,7 @@ public class GameManager : MonoBehaviour
         lives = 5;
         gameOver = false;
         isMoving = false;
+        shieldSpawned = false;
     }
 
     private void Update()
@@ -59,6 +64,11 @@ public class GameManager : MonoBehaviour
         gameOver = true;
         isMoving = false;
         objSpawner.isSpawning = false;
+
+        if (OnEnd != null)
+        {
+            OnEnd();
+        }
 
         // Clear all spawned obstacles
         foreach (GameObject obj in objSpawner.spawnedObjects)

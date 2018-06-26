@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private GameObject shieldObjectPrefab;
     public float maxXSize = 0.3f;
     public float maxYSize = 0.3f;
     private float timer;
@@ -37,6 +38,11 @@ public class ObjectSpawner : MonoBehaviour
             SpawnObject();
             GetTimer();
         }
+
+        if(!GameManager.instance.hasShield && !GameManager.instance.shieldSpawned)
+        {
+            SpawnShield();
+        }
     }
 
     private void SpawnObject()
@@ -47,6 +53,16 @@ public class ObjectSpawner : MonoBehaviour
         obstacle.GetComponent<Obstacle>().InitializeObject(maxXSize, maxYSize);
         spawnedObjects.Add(obstacle);
         Destroy(obstacle, 8f);
+    }
+
+    private void SpawnShield()
+    {
+        
+        GameManager.instance.shieldSpawned = true;
+        float xPos = Random.Range(-5, screenWidth);
+        float yPos = Random.Range(-5, screenHeight);
+        Vector2 spawnPos = new Vector2(xPos, yPos);
+        Instantiate(shieldObjectPrefab, spawnPos, Quaternion.identity);
     }
 
     private void GetTimer()

@@ -7,7 +7,16 @@ public class Points : MonoBehaviour
 {
     [HideInInspector] public int score;
     [HideInInspector] public int highScore;
+    private int tempScore;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Text panelScore;
+    [SerializeField] private Text highScoreText;
+
+    private void Awake()
+    {
+        GameManager.OnStart += ResetScore;
+        GameManager.OnEnd += UpdateScore;
+    }
 
     private void Start()
     {
@@ -18,11 +27,35 @@ public class Points : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + score.ToString();
+        tempScore = score;
     }
 
     private void AddScore()
     {
-        int amount = Random.Range(1, 6);
-        score += amount;
+        if(!GameManager.instance.gameOver)
+        {
+            int amount = Random.Range(1, 6);
+            score += amount;
+        }
+    }
+
+    private void ResetScore()
+    {
+        tempScore = 0;
+        score = 0;
+    }
+
+    private void UpdateScore()
+    {
+        if(tempScore > highScore)
+        {
+            highScore = tempScore;
+            highScoreText.text = "Highscore: " + tempScore.ToString();
+        }
+
+        panelScore.text = "Score: " + tempScore.ToString();
+
+        Debug.Log("SCORE UPDATED");
+        Debug.Log(tempScore);
     }
 }

@@ -531,7 +531,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score: 2563'
+  m_Text: 'Score: 0'
 --- !u!222 &467040473
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -622,6 +622,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -636,6 +637,17 @@ AudioListener:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfd08f03df272d849897e7f872de0fad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1127,8 +1139,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclePrefab: {fileID: 1654190128486904, guid: 5899d84db2ed66642befaa8bfa35cfa1,
     type: 2}
+  shieldObjectPrefab: {fileID: 1371547915234964, guid: b92bae7e43e2e054b92bdaba71818b21,
+    type: 2}
   maxXSize: 0.3
   maxYSize: 0.3
+  isSpawning: 0
   spawnedObjects: []
 --- !u!4 &983373332
 Transform:
@@ -1332,7 +1347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Highscore: 2563'
+  m_Text: 'Highscore: 0'
 --- !u!222 &1144590230
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1445,6 +1460,8 @@ MonoBehaviour:
   score: 0
   highScore: 0
   scoreText: {fileID: 1445484530}
+  panelScore: {fileID: 467040472}
+  highScoreText: {fileID: 1144590229}
 --- !u!4 &1439054626
 Transform:
   m_ObjectHideFlags: 0
@@ -1474,6 +1491,8 @@ MonoBehaviour:
   lives: 0
   gameOver: 0
   isMoving: 0
+  hasShield: 0
+  shieldSpawned: 0
 --- !u!114 &1439054628
 MonoBehaviour:
   m_ObjectHideFlags: 0

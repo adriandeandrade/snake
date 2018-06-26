@@ -10,10 +10,13 @@ public class Snake : MonoBehaviour
     private Direction direction = Direction.UP;
     private float screenHeight, screenWidth;
 
+    [SerializeField] private GameObject shield;
+
     private void Awake()
     {
         screenWidth = Camera.main.orthographicSize;
         screenHeight = Camera.main.orthographicSize;
+        GameManager.instance.hasShield = false;
     }
 
     private void Update()
@@ -86,11 +89,37 @@ public class Snake : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Obstacle"))
+        if (other.CompareTag("Obstacle"))
         {
-            GameManager.instance.EndRound();
-            Destroy(gameObject);
-            Debug.Log("Hit");
+            if (GameManager.instance.hasShield)
+            {
+                GameManager.instance.hasShield = false;
+                shield.SetActive(false);
+                Destroy(other.gameObject);
+                Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera(0.5f, 0.3f);
+            }
+            else
+            {
+                GameManager.instance.EndRound();
+                Destroy(gameObject);
+            }
         }
+
+        if (other.CompareTag("Shield"))
+        {
+            if (!GameManager.instance.hasShield)
+            {
+                GameManager.instance.hasShield = true;
+                GameManager.instance.shieldSpawned = false;
+                Destroy(other.gameObject);
+                InitShield();
+            }
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void InitShield()
+    {
+        shield.SetActive(true);
     }
 }
