@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 50017531504637058}
   m_Layer: 0
   m_Name: pfb_snake
-  m_TagString: Untagged
+  m_TagString: Snake
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,6 +122,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   shield: {fileID: 1380576619552428}
+  hitParticle: {fileID: 1232664912377644, guid: 93788e536df7308428cbe58345866e66,
+    type: 2}
 --- !u!114 &114735529584546594
 MonoBehaviour:
   m_ObjectHideFlags: 1

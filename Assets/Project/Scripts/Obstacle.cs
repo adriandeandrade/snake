@@ -8,6 +8,8 @@ public class Obstacle : MonoBehaviour
     private Transform target;
     private Vector2 direction;
 
+    [SerializeField] private GameObject hitParticle;
+
     private void Start()
     {
         if (FindObjectOfType<Snake>() != null)
@@ -18,7 +20,7 @@ public class Obstacle : MonoBehaviour
             Debug.Log("Cannot find target.");
             Invoke("FindTarget", 0.1f);
         }
-
+        
         direction = target.position - transform.position;
     }
 
@@ -37,5 +39,16 @@ public class Obstacle : MonoBehaviour
     private void FindTarget()
     {
         target = FindObjectOfType<Snake>().transform;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Snake"))
+        {
+            GameObject ps = Instantiate(hitParticle, gameObject.transform);
+            
+            Destroy(ps, 1.5f);
+            
+        }   
     }
 }

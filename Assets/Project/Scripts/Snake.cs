@@ -11,6 +11,7 @@ public class Snake : MonoBehaviour
     private float screenHeight, screenWidth;
 
     [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject hitParticle;
 
     private void Awake()
     {
@@ -95,8 +96,10 @@ public class Snake : MonoBehaviour
             {
                 GameManager.instance.hasShield = false;
                 shield.SetActive(false);
-                Destroy(other.gameObject);
-                Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera(0.5f, 0.3f);
+                GameObject ps = Instantiate(hitParticle, gameObject.transform);
+                //Destroy(other.gameObject);
+                Destroy(ps, 1.0f);
+                Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera(/*0.5f, 0.3f*/);
             }
             else
             {

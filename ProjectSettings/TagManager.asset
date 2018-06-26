@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Shield
+  - Snake
   layers:
   - Default
   - TransparentFX
