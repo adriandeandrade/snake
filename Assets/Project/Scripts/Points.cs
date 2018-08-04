@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Points : MonoBehaviour
 {
-    [HideInInspector] public int score;
+    [HideInInspector] public static int score;
     [HideInInspector] public int highScore;
     private int tempScore;
     [SerializeField] private Text scoreText;

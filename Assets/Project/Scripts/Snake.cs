@@ -10,14 +10,18 @@ public class Snake : MonoBehaviour
     private Direction direction = Direction.UP;
     private float screenHeight, screenWidth;
 
-    [SerializeField] private GameObject shield;
     [SerializeField] private GameObject hitParticle;
+
+    [SerializeField] private Animator animator;
+    [SerializeField] private TrailRenderer trail;
 
     private void Awake()
     {
         screenWidth = Camera.main.orthographicSize;
         screenHeight = Camera.main.orthographicSize;
         GameManager.instance.hasShield = false;
+        animator = GetComponent<Animator>();
+        trail = GetComponent<TrailRenderer>();
     }
 
     private void Update()
@@ -25,6 +29,20 @@ public class Snake : MonoBehaviour
         if (GameManager.instance.gameOver || !GameManager.instance.isMoving)
             return;
 
+        if(GameManager.instance.hasShield)
+        {
+            animator.SetBool("hasShield", true);
+        } else
+        {
+            animator.SetBool("hasShield", false);
+        }
+
+        Movement();
+        CameraBounds();
+    }
+
+    private void Movement()
+    {
         if (Input.GetKeyDown(KeyCode.W))
         {
             direction = Direction.UP;
@@ -42,12 +60,6 @@ public class Snake : MonoBehaviour
             direction = Direction.RIGHT;
         }
 
-        Movement();
-        CameraBounds();
-    }
-
-    private void Movement()
-    {
         switch (direction)
         {
             case Direction.UP:
@@ -95,11 +107,9 @@ public class Snake : MonoBehaviour
             if (GameManager.instance.hasShield)
             {
                 GameManager.instance.hasShield = false;
-                shield.SetActive(false);
-                GameObject ps = Instantiate(hitParticle, gameObject.transform);
-                //Destroy(other.gameObject);
-                Destroy(ps, 1.0f);
-                Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera(/*0.5f, 0.3f*/);
+                GameObject hitPs = Instantiate(this.hitParticle, gameObject.transform);
+                Destroy(hitPs, 1.0f);
+                Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera();
             }
             else
             {
@@ -115,14 +125,8 @@ public class Snake : MonoBehaviour
                 GameManager.instance.hasShield = true;
                 GameManager.instance.shieldSpawned = false;
                 Destroy(other.gameObject);
-                InitShield();
             }
             Destroy(other.gameObject);
         }
-    }
-
-    private void InitShield()
-    {
-        shield.SetActive(true);
     }
 }

@@ -6,20 +6,22 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     private UIManager uiManager;
     private ObjectSpawner objSpawner;
-    [SerializeField] private GameObject playerPrefab;
 
     public delegate void OnRoundStart();
-    public static event OnRoundStart OnStart;
     public delegate void OnRoundEnd();
+
+    public static event OnRoundStart OnStart;
     public static event OnRoundEnd OnEnd;
 
-    public int lives;
     public bool gameOver;
     public bool isMoving;
     public bool hasShield;
     public bool shieldSpawned;
+    public bool tryAgainScreen;
+    public bool isStartScreen;
 
     private void Start()
     {
@@ -29,15 +31,16 @@ public class GameManager : MonoBehaviour
 
         uiManager = GetComponent<UIManager>();
         objSpawner = FindObjectOfType<ObjectSpawner>();
-        lives = 5;
-        gameOver = false;
+        gameOver = true;
+        tryAgainScreen = false;
+        isStartScreen = true;
         isMoving = false;
         shieldSpawned = false;
     }
 
     private void Update()
     {
-        if (!isMoving && !gameOver)
+        if (isStartScreen)
         {
             if (Input.anyKeyDown)
             {
@@ -51,7 +54,9 @@ public class GameManager : MonoBehaviour
         uiManager.ActivatePanel("scorePanel");
         uiManager.DeactivatePanel("startRoundPanel");
         isMoving = true;
-        Instantiate(playerPrefab, Vector2.zero, Quaternion.identity);
+        gameOver = false;
+        tryAgainScreen = false;
+        isStartScreen = false;
 
         if(OnStart != null)
         {
@@ -63,39 +68,21 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
         isMoving = false;
-        objSpawner.isSpawning = false;
+
+        uiManager.ActivatePanel("tryAgainPanel");
+        tryAgainScreen = true;
+        uiManager.DeactivatePanel("scorePanel");
 
         if (OnEnd != null)
         {
             OnEnd();
         }
-
-        // Clear all spawned obstacles
-        foreach (GameObject obj in objSpawner.spawnedObjects)
-        {
-            Destroy(obj);
-        }
-
-        objSpawner.spawnedObjects.Clear();
-
-        if (lives <= 0)
-        {
-            uiManager.ActivatePanel("gameOverPanel");
-            uiManager.DeactivatePanel("scorePanel");
-        }
-        else
-        {
-            lives--;
-            uiManager.ActivatePanel("tryAgainPanel");
-            uiManager.DeactivatePanel("scorePanel");
-        }
     }
 
     public void ResetRound()
     {
-        gameOver = false;
-        uiManager.DeactivatePanel("gameOverPanel");
         uiManager.DeactivatePanel("tryAgainPanel");
         uiManager.ActivatePanel("startRoundPanel");
+        isStartScreen = true;
     }
 }

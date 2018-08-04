@@ -7,14 +7,12 @@ public class UIManager : MonoBehaviour
     private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
 
     [SerializeField] private GameObject tryAgainPanel;
-    [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject scorePanel;
     [SerializeField] private GameObject startRoundPanel;
 
     private void Awake()
     {
         panels.Add("tryAgainPanel", tryAgainPanel);
-        panels.Add("gameOverPanel", gameOverPanel);
         panels.Add("scorePanel", scorePanel);
         panels.Add("startRoundPanel", startRoundPanel);
     }

@@ -1,0 +1,34 @@
+Ideas
+	- Shield timer
+	- Shield spawn timer
+	- Animated menus
+	- Shop
+		- Different skins for the shield, player
+		- Different backdrops
+		- Pay with coins
+	- Spawn coins
+
+
+	GAME STATES
+
+	[GAME, TRYAGAIN, PRESSANYKEY]
+		switch(state) {
+			case: GAME
+				//RUN GAME LOGIC
+					- Spawn player
+					- Show score ui
+					- Hide press any key ui
+				break;
+
+			case: TRYAGAIN
+				// STOP SPAWNING AND CALCULATE SCORE
+					- Show try again ui
+					- Do stuff
+				break;
+
+			case: PRESSANYKEY
+				// WAIT FOR KEY INPUT
+					- Legit wait for key input and switch to game state
+					- 
+
+		}

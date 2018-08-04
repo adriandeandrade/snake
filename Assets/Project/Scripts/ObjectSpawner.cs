@@ -5,25 +5,32 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject shieldObjectPrefab;
+    private GameObject trash;
+
     public float maxXSize = 0.3f;
     public float maxYSize = 0.3f;
-    private float timer;
-    private float spawnDelay = 2f;
-    public bool isSpawning;
+    private float shieldTimer;
+    private float shieldSpawnDelay;
+    [SerializeField] private float startSpawnDelay = 2f;
+
+    [Range(.5f, 2f)] [SerializeField] private float obstacleSpawnDelay;
 
     private float screenHeight, screenWidth;
-    public List<GameObject> spawnedObjects = new List<GameObject>();
 
     private void Awake()
     {
-        isSpawning = false;
-        GetTimer();
-        GameManager.OnStart += StartSpawning;
+        GameManager.OnStart += StartObstacleSpawning;
+        GameManager.OnStart += SpawnPlayer;
+        GameManager.OnStart += CreateTrashObject;
+        GameManager.OnEnd += StopObstacleSpawning;
     }
 
     private void Start()
     {
+        trash = new GameObject();
+        trash.name = "trash";
         screenHeight = Camera.main.orthographicSize;
         screenWidth = Camera.main.orthographicSize;
     }
@@ -33,16 +40,35 @@ public class ObjectSpawner : MonoBehaviour
         if (GameManager.instance.gameOver && !GameManager.instance.isMoving)
             return;
 
-        if (timer < Time.time && isSpawning)
+        if (!GameManager.instance.hasShield && !GameManager.instance.shieldSpawned)
+        {
+            if (shieldTimer < Time.time)
+            {
+                SpawnShield();
+                GetShieldSpawnTimer();
+            }
+        }
+    }
+
+    public void CreateTrashObject()
+    {
+        trash = new GameObject();
+        trash.name = "trash";
+    }
+
+    IEnumerator SpawnObstacles()
+    {
+        yield return new WaitForSeconds(startSpawnDelay);
+        while (true)
         {
             SpawnObject();
-            GetTimer();
+            yield return new WaitForSeconds(obstacleSpawnDelay);
         }
+    }
 
-        if(!GameManager.instance.hasShield && !GameManager.instance.shieldSpawned)
-        {
-            SpawnShield();
-        }
+    private void SpawnPlayer()
+    {
+        Instantiate(playerPrefab, Vector2.zero, Quaternion.identity);
     }
 
     private void SpawnObject()
@@ -51,13 +77,12 @@ public class ObjectSpawner : MonoBehaviour
 
         GameObject obstacle = Instantiate(obstaclePrefab, spawnPos, Quaternion.identity);
         obstacle.GetComponent<Obstacle>().InitializeObject(maxXSize, maxYSize);
-        spawnedObjects.Add(obstacle);
+        obstacle.transform.parent = trash.transform;
         Destroy(obstacle, 8f);
     }
 
     private void SpawnShield()
     {
-        
         GameManager.instance.shieldSpawned = true;
         float xPos = Random.Range(-5, screenWidth);
         float yPos = Random.Range(-5, screenHeight);
@@ -65,14 +90,22 @@ public class ObjectSpawner : MonoBehaviour
         Instantiate(shieldObjectPrefab, spawnPos, Quaternion.identity);
     }
 
-    private void GetTimer()
+    private void GetShieldSpawnTimer()
     {
-        timer = Time.time + Random.Range(.5f, 2f);
+        shieldTimer = Time.time + Random.Range(15f, 30f);
     }
 
-    private void StartSpawning()
+    private void StartObstacleSpawning()
     {
-        isSpawning = true;
+        StartCoroutine("SpawnObstacles");
+        Debug.Log("Now spawning objects");
+    }
+
+    private void StopObstacleSpawning()
+    {
+        StopCoroutine("SpawnObstacles");
+        Debug.Log("No longer spawning objects");
+        Destroy(trash);
     }
 
     private Vector2 GetSpawnLocation()
