@@ -24,6 +24,12 @@ public class Snake : MonoBehaviour
         trail = GetComponent<TrailRenderer>();
     }
 
+    private void Start()
+    {
+        Debug.Log("Screen Height: " + screenHeight.ToString());
+        Debug.Log("Screen Width: " + screenWidth.ToString());
+    }
+
     private void Update()
     {
         if (GameManager.instance.gameOver || !GameManager.instance.isMoving)
@@ -90,13 +96,15 @@ public class Snake : MonoBehaviour
         }
 
         // Y axis bounds
-        if (transform.position.y > screenHeight)
+        if (transform.position.y > screenHeight - 1.0f)
         {
+            // Transforms the player to the bottom of the screen when it crosses the y bound on the top.
             transform.position = new Vector2(transform.position.x, -screenHeight);
         }
         else if (transform.position.y < -screenHeight)
         {
-            transform.position = new Vector2(transform.position.x, screenHeight);
+            // Transforms the player to the top of the screen when it crosses the y bound on the bottom.
+            transform.position = new Vector2(transform.position.x, screenHeight - 1.0f);
         }
     }
 
