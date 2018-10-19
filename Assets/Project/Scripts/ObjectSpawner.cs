@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class ObjectSpawner : MonoBehaviour
 {
@@ -21,10 +22,10 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.OnStart += StartObstacleSpawning;
-        GameManager.OnStart += SpawnPlayer;
-        GameManager.OnStart += CreateTrashObject;
-        GameManager.OnEnd += StopObstacleSpawning;
+        GameManagerNew.OnStart += StartObstacleSpawning;
+        GameManagerNew.OnStart += SpawnPlayer;
+        GameManagerNew.OnStart += CreateTrashObject;
+        GameManagerNew.OnEnd += StopObstacleSpawning;
     }
 
     private void Start()
@@ -37,10 +38,10 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.gameOver && !GameManager.instance.isMoving)
+        if (GameManagerNew.instance.gameOver && !GameManagerNew.instance.isMoving)
             return;
 
-        if (!GameManager.instance.hasShield && !GameManager.instance.shieldSpawned)
+        if (!GameManagerNew.instance.hasShield && !GameManagerNew.instance.shieldSpawned)
         {
             if (shieldTimer < Time.time)
             {
@@ -83,7 +84,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private void SpawnShield()
     {
-        GameManager.instance.shieldSpawned = true;
+        GameManagerNew.instance.shieldSpawned = true;
         float xPos = Random.Range(-5, screenWidth);
         float yPos = Random.Range(-5, screenHeight);
         Vector2 spawnPos = new Vector2(xPos, yPos);

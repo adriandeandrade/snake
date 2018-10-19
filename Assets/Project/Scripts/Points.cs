@@ -14,8 +14,8 @@ public class Points : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.OnStart += ResetScore;
-        GameManager.OnEnd += UpdateScore;
+        GameManagerNew.OnStart += ResetScore;
+        GameManagerNew.OnEnd += UpdateScore;
     }
 
     private void Start()
@@ -32,7 +32,7 @@ public class Points : MonoBehaviour
 
     private void AddScore()
     {
-        if(!GameManager.instance.gameOver)
+        if(!GameManagerNew.instance.gameOver)
         {
             int amount = Random.Range(1, 6);
             score += amount;

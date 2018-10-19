@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
+    private static Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
 
     [SerializeField] private GameObject tryAgainPanel;
     [SerializeField] private GameObject scorePanel;
@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
         panels.Add("startRoundPanel", startRoundPanel);
     }
 
-    public void ActivatePanel(string panelName)
+    public static void ActivatePanel(string panelName)
     {
         GameObject panel;
         if (panels.TryGetValue(panelName, out panel))
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void DeactivatePanel(string panelName)
+    public static void DeactivatePanel(string panelName)
     {
         GameObject panel;
         if (panels.TryGetValue(panelName, out panel))

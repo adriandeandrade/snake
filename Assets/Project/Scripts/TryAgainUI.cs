@@ -16,6 +16,6 @@ public class TryAgainUI : MonoBehaviour
 
     private void Reset()
     {
-        GameManager.instance.ResetRound();
+        //GameManagerNew.instance.ResetRound();
     }
 }
