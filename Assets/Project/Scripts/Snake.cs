@@ -19,7 +19,7 @@ public class Snake : MonoBehaviour
     {
         screenWidth = Camera.main.orthographicSize;
         screenHeight = Camera.main.orthographicSize;
-        GameManager.instance.hasShield = false;
+        GameManagerNew.instance.hasShield = false;
         animator = GetComponent<Animator>();
         trail = GetComponent<TrailRenderer>();
     }
@@ -32,10 +32,11 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.gameOver || !GameManager.instance.isMoving)
+        if (GameManagerNew.instance.currentGameState == GameManagerNew.GameStates.START || 
+            GameManagerNew.instance.currentGameState == GameManagerNew.GameStates.TRYAGAIN)
             return;
 
-        if(GameManager.instance.hasShield)
+        if(GameManagerNew.instance.hasShield)
         {
             animator.SetBool("hasShield", true);
         } else
@@ -112,26 +113,26 @@ public class Snake : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            if (GameManager.instance.hasShield)
+            if (GameManagerNew.instance.hasShield)
             {
-                GameManager.instance.hasShield = false;
+                GameManagerNew.instance.hasShield = false;
                 GameObject hitPs = Instantiate(this.hitParticle, gameObject.transform);
                 Destroy(hitPs, 1.0f);
                 Camera.main.gameObject.GetComponent<CameraShake>().ShakeCamera();
             }
             else
             {
-                GameManager.instance.EndRound();
+                GameManagerNew.instance.playerDead = true;
                 Destroy(gameObject);
             }
         }
 
         if (other.CompareTag("Shield"))
         {
-            if (!GameManager.instance.hasShield)
+            if (!GameManagerNew.instance.hasShield)
             {
-                GameManager.instance.hasShield = true;
-                GameManager.instance.shieldSpawned = false;
+                GameManagerNew.instance.hasShield = true;
+                GameManagerNew.instance.shieldSpawned = false;
                 Destroy(other.gameObject);
             }
             Destroy(other.gameObject);

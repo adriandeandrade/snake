@@ -859,7 +859,6 @@ GameObject:
   - component: {fileID: 899159555}
   - component: {fileID: 899159557}
   - component: {fileID: 899159556}
-  - component: {fileID: 899159558}
   m_Layer: 5
   m_Name: TryAgainPanel
   m_TagString: Untagged
@@ -923,17 +922,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 899159554}
---- !u!114 &899159558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 899159554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64cfd7f23cdb9a14494e2c5f71a73c57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &899230557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,9 +1123,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1439054626}
-  - component: {fileID: 1439054627}
   - component: {fileID: 1439054625}
   - component: {fileID: 1439054628}
+  - component: {fileID: 1439054627}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1181,15 +1169,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439054624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78cc35c956178a346ac996188afd188e, type: 3}
+  m_Script: {fileID: 11500000, guid: b10d4f2a38a6dd34297d83c822eb90b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  retryPanel: {fileID: 899159554}
   gameOver: 0
   isMoving: 0
   hasShield: 0
   shieldSpawned: 0
   tryAgainScreen: 0
   isStartScreen: 0
+  playerDead: 0
 --- !u!114 &1439054628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,7 +1526,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 899159558}
+      - m_Target: {fileID: 0}
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -1658,7 +1648,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 899159558}
+      - m_Target: {fileID: 0}
         m_MethodName: Retry
         m_Mode: 1
         m_Arguments:
